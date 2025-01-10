@@ -160,85 +160,172 @@
         class="file-icons"
         :class="authStore.user?.viewMode ?? ''"
       >
-        <div>
-          <div class="item header">
-            <div></div>
-            <div>
-              <p
-                :class="{ active: nameSorted }"
-                class="name"
-                role="button"
-                tabindex="0"
-                @click="sort('name')"
-                :title="t('files.sortByName')"
-                :aria-label="t('files.sortByName')"
-              >
-                <span>{{ t("files.name") }}</span>
-                <i class="material-icons">{{ nameIcon }}</i>
-              </p>
+        <div class="row" style="display: flex; gap: 10px;">
+          <div class="column" style="flex: 1; flex-shrink: 0; min-width: 300px;">
+            <div class="item header">
+              <div></div>
+              <div>
+                <p
+                    :class="{ active: nameSorted }"
+                    class="name"
+                    role="button"
+                    tabindex="0"
+                    @click="sort('name')"
+                    :title="t('files.sortByName')"
+                    :aria-label="t('files.sortByName')"
+                >
+                  <span>{{ t("files.name") }}</span>
+                  <i class="material-icons">{{ nameIcon }}</i>
+                </p>
 
-              <p
-                :class="{ active: sizeSorted }"
-                class="size"
-                role="button"
-                tabindex="0"
-                @click="sort('size')"
-                :title="t('files.sortBySize')"
-                :aria-label="t('files.sortBySize')"
+                <p
+                    :class="{ active: sizeSorted }"
+                    class="size"
+                    role="button"
+                    tabindex="0"
+                    @click="sort('size')"
+                    :title="t('files.sortBySize')"
+                    :aria-label="t('files.sortBySize')"
+                >
+                  <span>{{ t("files.size") }}</span>
+                  <i class="material-icons">{{ sizeIcon }}</i>
+                </p>
+                <p
+                    :class="{ active: modifiedSorted }"
+                    class="modified"
+                    role="button"
+                    tabindex="0"
+                    @click="sort('modified')"
+                    :title="t('files.sortByLastModified')"
+                    :aria-label="t('files.sortByLastModified')"
+                >
+                  <span>{{ t("files.lastModified") }}</span>
+                  <i class="material-icons">{{ modifiedIcon }}</i>
+                </p>
+              </div>
+            </div>
+
+            <h2 v-if="fileStore.req?.numDirs ?? false">
+              {{ t("files.folders") }}
+            </h2>
+            <div v-if="fileStore.req?.numDirs ?? false">
+              <item
+                  v-for="item in dirs"
+                  :key="base64(item.name)"
+                  v-bind:index="item.index"
+                  v-bind:name="item.name"
+                  v-bind:isDir="item.isDir"
+                  v-bind:url="item.url"
+                  v-bind:modified="item.modified"
+                  v-bind:type="item.type"
+                  v-bind:size="item.size"
+                  v-bind:path="item.path"
               >
-                <span>{{ t("files.size") }}</span>
-                <i class="material-icons">{{ sizeIcon }}</i>
-              </p>
-              <p
-                :class="{ active: modifiedSorted }"
-                class="modified"
-                role="button"
-                tabindex="0"
-                @click="sort('modified')"
-                :title="t('files.sortByLastModified')"
-                :aria-label="t('files.sortByLastModified')"
+              </item>
+            </div>
+
+            <h2 v-if="fileStore.req?.numFiles ?? false">
+              {{ t("files.files") }}
+            </h2>
+            <div v-if="fileStore.req?.numFiles ?? false">
+              <item
+                  v-for="item in files"
+                  :key="base64(item.name)"
+                  v-bind:index="item.index"
+                  v-bind:name="item.name"
+                  v-bind:isDir="item.isDir"
+                  v-bind:url="item.url"
+                  v-bind:modified="item.modified"
+                  v-bind:type="item.type"
+                  v-bind:size="item.size"
+                  v-bind:path="item.path"
               >
-                <span>{{ t("files.lastModified") }}</span>
-                <i class="material-icons">{{ modifiedIcon }}</i>
-              </p>
+              </item>
             </div>
           </div>
-        </div>
 
-        <h2 v-if="fileStore.req?.numDirs ?? false">
-          {{ t("files.folders") }}
-        </h2>
-        <div v-if="fileStore.req?.numDirs ?? false">
-          <item
-            v-for="item in dirs"
-            :key="base64(item.name)"
-            v-bind:index="item.index"
-            v-bind:name="item.name"
-            v-bind:isDir="item.isDir"
-            v-bind:url="item.url"
-            v-bind:modified="item.modified"
-            v-bind:type="item.type"
-            v-bind:size="item.size"
-            v-bind:path="item.path"
-          >
-          </item>
-        </div>
+          <div class="column" style="flex: 1; flex-shrink: 0; min-width: 300px;">
+            <div class="item header">
+              <div></div>
+              <div>
+                <p
+                    :class="{ active: nameSorted }"
+                    class="name"
+                    role="button"
+                    tabindex="0"
+                    @click="sort('name')"
+                    :title="t('files.sortByName')"
+                    :aria-label="t('files.sortByName')"
+                >
+                  <span>{{ t("files.name") }}</span>
+                  <i class="material-icons">{{ nameIcon }}</i>
+                </p>
 
-        <h2 v-if="fileStore.req?.numFiles ?? false">{{ t("files.files") }}</h2>
-        <div v-if="fileStore.req?.numFiles ?? false">
-          <item
-            v-for="item in files"
-            :key="base64(item.name)"
-            v-bind:index="item.index"
-            v-bind:name="item.name"
-            v-bind:isDir="item.isDir"
-            v-bind:url="item.url"
-            v-bind:modified="item.modified"
-            v-bind:type="item.type"
-            v-bind:size="item.size"
-            v-bind:path="item.path"
-          >
-          </item>
+                <p
+                    :class="{ active: sizeSorted }"
+                    class="size"
+                    role="button"
+                    tabindex="0"
+                    @click="sort('size')"
+                    :title="t('files.sortBySize')"
+                    :aria-label="t('files.sortBySize')"
+                >
+                  <span>{{ t("files.size") }}</span>
+                  <i class="material-icons">{{ sizeIcon }}</i>
+                </p>
+                <p
+                    :class="{ active: modifiedSorted }"
+                    class="modified"
+                    role="button"
+                    tabindex="0"
+                    @click="sort('modified')"
+                    :title="t('files.sortByLastModified')"
+                    :aria-label="t('files.sortByLastModified')"
+                >
+                  <span>{{ t("files.lastModified") }}</span>
+                  <i class="material-icons">{{ modifiedIcon }}</i>
+                </p>
+              </div>
+            </div>
+
+            <h2 v-if="fileStore.req?.numDirs ?? false">
+              {{ t("files.folders") }}
+            </h2>
+            <div v-if="fileStore.req?.numDirs ?? false">
+              <item
+                  v-for="item in dirs"
+                  :key="base64(item.name)"
+                  v-bind:index="item.index"
+                  v-bind:name="item.name"
+                  v-bind:isDir="item.isDir"
+                  v-bind:url="item.url"
+                  v-bind:modified="item.modified"
+                  v-bind:type="item.type"
+                  v-bind:size="item.size"
+                  v-bind:path="item.path"
+              >
+              </item>
+            </div>
+
+            <h2 v-if="fileStore.req?.numFiles ?? false">
+              {{ t("files.files") }}
+            </h2>
+            <div v-if="fileStore.req?.numFiles ?? false">
+              <item
+                  v-for="item in files"
+                  :key="base64(item.name)"
+                  v-bind:index="item.index"
+                  v-bind:name="item.name"
+                  v-bind:isDir="item.isDir"
+                  v-bind:url="item.url"
+                  v-bind:modified="item.modified"
+                  v-bind:type="item.type"
+                  v-bind:size="item.size"
+                  v-bind:path="item.path"
+              >
+              </item>
+            </div>
+          </div>
         </div>
 
         <input
